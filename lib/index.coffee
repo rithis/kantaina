@@ -13,7 +13,7 @@ class Container
   constructor: ->
     @dependencies = {}
     @factories = {}
-    @values = {}
+    @values = container: @
 
   set: (key, value) ->
     if _.isFunction value
