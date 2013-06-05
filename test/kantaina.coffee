@@ -69,6 +69,17 @@ describe "kantaina()", ->
           calls.should.equal 1
         .should.notify callback
 
+      it "should throw error if circular dependency found", (callback) ->
+        try
+          container = kantaina()
+          container.set "a", (b) ->
+            b
+          container.set "b", (a) ->
+            a
+        catch err
+          err.message.should.equal "Сircular dependency: b <-> a"
+          callback()
+
     describe "#inject()", ->
       it "should wrap function with promise and inject values", (callback) ->
         container = kantaina()

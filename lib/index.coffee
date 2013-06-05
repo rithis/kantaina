@@ -11,12 +11,20 @@ parseArguments = (f) ->
 
 class Container
   constructor: ->
+    @dependencies = {}
     @factories = {}
     @values = {}
 
   set: (key, value) ->
     if _.isFunction value
+      @dependencies[key] = parseArguments value
       @factories[key] = value
+
+      for dependency in @dependencies[key]
+        if @dependencies.hasOwnProperty dependency
+          if key in @dependencies[dependency]
+            throw new Error "Сircular dependency: #{key} <-> #{dependency}"
+
     else
       @values[key] = value
 
@@ -26,12 +34,12 @@ class Container
     else
       @_getOne keys
 
-  inject: (factory) ->
+  inject: (factory, dependencies) ->
     =>
+      dependencies = parseArguments factory unless dependencies
       deferred = w.defer()
-      args = parseArguments factory
 
-      @_getMany(args).then (dependencies) ->
+      @_getMany(dependencies).then (dependencies) ->
         deferred.resolve factory.apply null, dependencies
 
       deferred.promise
@@ -43,7 +51,7 @@ class Container
       deferred.resolve @values[key]
 
     else if _.isFunction @factories[key]
-      @values[key] = @inject(@factories[key])()
+      @values[key] = @inject(@factories[key], @dependencies[key])()
       @values[key].then (value) =>
         @values[key] = value
         deferred.resolve value
