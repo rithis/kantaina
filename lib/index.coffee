@@ -1,3 +1,4 @@
+DepGraph = require "dep-graph"
 _ = require "lodash"
 w = require "when"
 
@@ -11,6 +12,7 @@ parseArguments = (f) ->
 
 class Container
   constructor: ->
+    @graph = new DepGraph
     @dependencies = {}
     @factories = {}
     @values = container: @
@@ -21,9 +23,10 @@ class Container
       @factories[key] = value
 
       for dependency in @dependencies[key]
-        if @dependencies.hasOwnProperty dependency
-          if key in @dependencies[dependency]
-            throw new Error "Сircular dependency: #{key} <-> #{dependency}"
+        @graph.add key, dependency
+
+      # check cyclic dependency
+      @graph.getChain key
 
     else
       @values[key] = value
