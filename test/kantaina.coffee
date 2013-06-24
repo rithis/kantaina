@@ -1,10 +1,12 @@
 kantaina = require ".."
+sinon = require "sinon"
 chai = require "chai"
 w = require "when"
 
 
 describe "kantaina()", ->
   chai.use require "chai-as-promised"
+  chai.use require "sinon-chai"
   chai.should()
 
   it "should return new kantaina.Container()", ->
@@ -81,6 +83,15 @@ describe "kantaina()", ->
         catch err
           err.message.should.equal "Cyclic dependency from b to c"
           callback()
+
+      it "should emit event after dependency factored", (callback) ->
+        container = kantaina()
+        listener = sinon.spy()
+        container.set "key", ->
+        container.on "factored-key", listener
+        container.get("key").then ->
+          listener.should.be.calledOnce
+        .should.notify callback
 
     describe "#inject()", ->
       it "should wrap function with promise and inject values", (callback) ->

@@ -1,4 +1,5 @@
 DepGraph = require "dep-graph"
+events = require "events"
 _ = require "lodash"
 w = require "when"
 
@@ -10,7 +11,7 @@ parseArguments = (f) ->
     .filter((arg) -> arg.length > 0)
 
 
-class Container
+class Container extends events.EventEmitter
   constructor: ->
     @graph = new DepGraph
     @dependencies = {}
@@ -58,6 +59,7 @@ class Container
       @values[key].then (value) =>
         @values[key] = value
         deferred.resolve value
+        @emit "factored-#{key}", value
 
     else
       deferred.resolve undefined
