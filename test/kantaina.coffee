@@ -101,3 +101,12 @@ describe "kantaina()", ->
         wrapped = container.inject (a, b) ->
           a + b
         wrapped().should.eventually.equal(3).notify callback
+
+    describe "#call()", ->
+      it "should call wrapped function", (callback) ->
+        container = kantaina()
+        container.set "a", 1
+        container.set "b", 2
+        promise = container.call (a, b) ->
+          a + b
+        promise.should.eventually.equal(3).notify callback
