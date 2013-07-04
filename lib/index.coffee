@@ -60,8 +60,7 @@ class Container extends events.EventEmitter
       getter keys
 
   inject: (factory) ->
-    @get(parseArguments factory).then (dependencies) ->
-      factory.apply null, dependencies
+    @get(parseArguments factory).spread factory
 
 
 module.exports = ->
