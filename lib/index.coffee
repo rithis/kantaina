@@ -55,9 +55,6 @@ class Container extends events.EventEmitter
 
       deferred.promise
 
-  call: (factory, dependencies) ->
-    do @inject factory, dependencies
-
   _getOne: (key) ->
     deferred = w.defer()
 
@@ -65,7 +62,7 @@ class Container extends events.EventEmitter
       deferred.resolve @values[key]
 
     else if _.isFunction @factories[key]
-      @values[key] = @call @factories[key], @dependencies[key]
+      @values[key] = @inject(@factories[key], @dependencies[key])()
       @values[key].then (value) =>
         @values[key] = value
         deferred.resolve value
