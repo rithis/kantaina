@@ -63,7 +63,7 @@ class Container extends events.EventEmitter
       deferred.resolve @values[key]
 
     else if _.isFunction @factories[key]
-      @values[key] = @inject(@factories[key])()
+      @values[key] = do @inject @factories[key]
       @values[key].then (value) =>
         @values[key] = value
         deferred.resolve value
