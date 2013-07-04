@@ -46,7 +46,7 @@ class Container extends events.EventEmitter
         deferred.resolve @values[key]
 
       else if _.isFunction @factories[key]
-        @values[key] = do @inject @factories[key]
+        @values[key] = @inject @factories[key]
         @values[key].then (value) =>
           @values[key] = value
           deferred.resolve value
@@ -64,9 +64,8 @@ class Container extends events.EventEmitter
       getter keys
 
   inject: (factory) ->
-    =>
-      @get(parseArguments factory).then (dependencies) ->
-        factory.apply null, dependencies
+    @get(parseArguments factory).then (dependencies) ->
+      factory.apply null, dependencies
 
 
 module.exports = ->

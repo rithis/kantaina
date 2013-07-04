@@ -139,6 +139,6 @@ describe "kantaina()", ->
         container = kantaina()
         container.set "a", 1
         container.set "b", 2
-        wrapped = container.inject (a, b) ->
+        container.inject (a, b) ->
           a + b
-        wrapped().should.eventually.equal(3).notify callback
+        .should.eventually.equal(3).notify callback
