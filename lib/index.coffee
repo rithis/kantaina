@@ -25,6 +25,9 @@ class Container extends events.EventEmitter
       @graph.add key, dependency for dependency in parseArguments value
       @graph.getChain key
 
+      # call factory if any listeners registered
+      @get(key) if @listeners(key).length > 0
+
     else
       @values[key] = value
       @emit key, value

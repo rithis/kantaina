@@ -43,6 +43,14 @@ describe "kantaina()", ->
           value.should.equal "second"
         .should.notify callback
 
+      it "should call factory if key has subscribers", (callback) ->
+        container = kantaina()
+        container.get("key").should.eventually.equal("value").notify callback
+        setTimeout ->
+          container.set "key", ->
+            "value"
+        , 50
+
     describe "#has()", ->
       it "should check values", ->
         container = kantaina()
