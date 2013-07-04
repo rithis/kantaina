@@ -1,6 +1,6 @@
 {
   "name": "kantaina"
-, "version": "1.0.0"
+, "version": "1.1.0"
 , "description": "Wonderful asynchronous DI container based on promises."
 , "homepage": "https://github.com/rithis/kantaina"
 , "bugs": {
