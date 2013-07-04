@@ -129,7 +129,7 @@ describe "kantaina()", ->
         container = kantaina()
         listener = sinon.spy()
         container.set "key", ->
-        container.on "factored-key", listener
+        container.on "key", listener
         container.get("key").then ->
           listener.should.be.calledOnce
         .should.notify callback

@@ -32,6 +32,7 @@ class Container extends events.EventEmitter
 
     else
       @values[key] = value
+      @emit key, value
 
   has: (key) ->
     @values.hasOwnProperty(key) or @factories.hasOwnProperty(key)
@@ -66,7 +67,7 @@ class Container extends events.EventEmitter
       @values[key].then (value) =>
         @values[key] = value
         deferred.resolve value
-        @emit "factored-#{key}", value
+        @emit key, value
 
     else
       deferred.resolve undefined
