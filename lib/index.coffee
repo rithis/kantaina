@@ -37,22 +37,17 @@ class Container extends events.EventEmitter
 
   get: (keys) ->
     getter = (key) =>
-      deferred = w.defer()
-
       if @values.hasOwnProperty key
-        deferred.resolve @values[key]
+        w.resolve @values[key]
 
       else if @factories[key]
-        @values[key] = @inject @factories[key]
-        @values[key].then (value) =>
+        @values[key] = @inject(@factories[key]).then (value) =>
           @values[key] = value
           @emit key, value
-          deferred.resolve value
+          value
 
       else
-        deferred.resolve undefined
-
-      deferred.promise
+        w.resolve undefined
 
     if Array.isArray keys
       w.map keys, getter
