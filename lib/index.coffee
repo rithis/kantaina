@@ -12,19 +12,17 @@ parseArguments = (f) ->
 
 class Container extends events.EventEmitter
   constructor: ->
-    @graph = new DepGraph
     @factories = {}
     @values = container: @
+    @graph = new DepGraph
 
   set: (key, value) ->
     if typeof value is "function"
       @factories[key] = value
       delete @values[key]
 
-      for dependency in parseArguments value
-        @graph.add key, dependency
-
       # check cyclic dependency
+      @graph.add key, dependency for dependency in parseArguments value
       @graph.getChain key
 
     else
