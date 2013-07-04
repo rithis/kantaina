@@ -1,6 +1,5 @@
 DepGraph = require "dep-graph"
 events = require "events"
-_ = require "lodash"
 w = require "when"
 
 
@@ -18,7 +17,7 @@ class Container extends events.EventEmitter
     @values = container: @
 
   set: (key, value) ->
-    if _.isFunction value
+    if typeof value is "function"
       @factories[key] = value
       delete @values[key]
 
@@ -45,7 +44,7 @@ class Container extends events.EventEmitter
       if @values.hasOwnProperty key
         deferred.resolve @values[key]
 
-      else if _.isFunction @factories[key]
+      else if @factories[key]
         @values[key] = @inject @factories[key]
         @values[key].then (value) =>
           @values[key] = value
@@ -57,8 +56,7 @@ class Container extends events.EventEmitter
 
       deferred.promise
 
-
-    if _.isArray keys
+    if Array.isArray keys
       w.map keys, getter
     else
       getter keys
