@@ -39,36 +39,34 @@ class Container extends events.EventEmitter
     @set key, value unless @has key
 
   get: (keys) ->
+    getter = (key) =>
+      deferred = w.defer()
+
+      if @values.hasOwnProperty key
+        deferred.resolve @values[key]
+
+      else if _.isFunction @factories[key]
+        @values[key] = do @inject @factories[key]
+        @values[key].then (value) =>
+          @values[key] = value
+          deferred.resolve value
+          @emit key, value
+
+      else
+        deferred.resolve undefined
+
+      deferred.promise
+
+
     if _.isArray keys
-      @_getMany keys
+      w.map keys, getter
     else
-      @_getOne keys
+      getter keys
 
   inject: (factory) ->
     =>
-      @_getMany(parseArguments factory).then (dependencies) ->
+      @get(parseArguments factory).then (dependencies) ->
         factory.apply null, dependencies
-
-  _getOne: (key) ->
-    deferred = w.defer()
-
-    if @values.hasOwnProperty key
-      deferred.resolve @values[key]
-
-    else if _.isFunction @factories[key]
-      @values[key] = do @inject @factories[key]
-      @values[key].then (value) =>
-        @values[key] = value
-        deferred.resolve value
-        @emit key, value
-
-    else
-      deferred.resolve undefined
-
-    deferred.promise
-
-  _getMany: (keys) ->
-    w.map keys, @_getOne.bind @
 
 
 module.exports = ->
