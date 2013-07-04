@@ -28,17 +28,20 @@ container.set "c", (a, b) ->
 
   deffered.promise
 
+# try to override already defined value
+container.unless "a", 100
+
 # receive value resolved by async factory
 container.get("c").then (value) ->
   # writes "3" after one second
   console.log value
 
-# wrap function and inject dependencies
-wrapped = container.inject (a, b, c) ->
+# inject dependencies into function
+promise = container.inject (a, b, c) ->
   a + b + c
 
-# wrapped function returns promise
-wrapped().then (value) ->
+# inject method returns promise
+promise.then (value) ->
   # writes "6" immediately because "c" already resolved
   console.log value
 ```
