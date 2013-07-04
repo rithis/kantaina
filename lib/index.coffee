@@ -48,13 +48,8 @@ class Container extends events.EventEmitter
 
   inject: (factory) ->
     =>
-      dependencies = parseArguments factory
-      deferred = w.defer()
-
-      @_getMany(dependencies).then (dependencies) ->
-        deferred.resolve factory.apply null, dependencies
-
-      deferred.promise
+      @_getMany(parseArguments factory).then (dependencies) ->
+        factory.apply null, dependencies
 
   _getOne: (key) ->
     deferred = w.defer()
