@@ -46,8 +46,8 @@ class Container extends events.EventEmitter
         @values[key] = @inject @factories[key]
         @values[key].then (value) =>
           @values[key] = value
-          deferred.resolve value
           @emit key, value
+          deferred.resolve value
 
       else
         deferred.resolve undefined
