@@ -33,6 +33,12 @@ class Container extends events.EventEmitter
     else
       @values[key] = value
 
+  has: (key) ->
+    @values.hasOwnProperty(key) or @factories.hasOwnProperty(key)
+
+  unless: (key, value) ->
+    @set key, value unless @has key
+
   get: (keys) ->
     if _.isArray keys
       @_getMany keys

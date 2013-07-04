@@ -43,6 +43,30 @@ describe "kantaina()", ->
           value.should.equal "second"
         .should.notify callback
 
+    describe "#has()", ->
+      it "should check values", ->
+        container = kantaina()
+        container.set "key", "value"
+        container.has("key").should.be.true
+
+      it "should check factories", ->
+        container = kantaina()
+        container.set "key", ->
+          "value"
+        container.has("key").should.be.true
+
+    describe "#unless()", ->
+      it "should set new value", (callback) ->
+        container = kantaina()
+        container.unless "key", "value"
+        container.get("key").should.eventually.equal("value").notify callback
+
+      it "should not replace old value", (callback) ->
+        container = kantaina()
+        container.unless "key", "first"
+        container.unless "key", "second"
+        container.get("key").should.eventually.equal("first").notify callback
+
     describe "#get()", ->
       it "should return promise", ->
         w.isPromise(kantaina().get("key")).should.be.true
