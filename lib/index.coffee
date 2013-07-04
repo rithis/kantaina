@@ -47,7 +47,9 @@ class Container extends events.EventEmitter
           value
 
       else
-        w.resolve undefined
+        deffered = w.defer()
+        @once key, deffered.resolve
+        deffered.promise
 
     if Array.isArray keys
       w.map keys, getter

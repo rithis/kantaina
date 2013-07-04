@@ -134,6 +134,13 @@ describe "kantaina()", ->
           listener.should.be.calledOnce
         .should.notify callback
 
+      it "should return promise if no value found", (callback) ->
+        container = kantaina()
+        container.get("key").should.eventually.equal("value").notify callback
+        setTimeout ->
+          container.set "key", "value"
+        , 50
+
     describe "#inject()", ->
       it "should wrap function with promise and inject values", (callback) ->
         container = kantaina()
