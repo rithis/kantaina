@@ -26,6 +26,23 @@ describe "kantaina()", ->
         container.set "key", "value"
         container.values.should.have.property "key"
 
+      it "should replace first value if second value is factory", (callback) ->
+        container = kantaina()
+
+        container.set "key", ->
+          "first"
+
+        container.get("key").then (value) ->
+          value.should.equal "first"
+        .then ->
+          container.set "key", ->
+            "second"
+        .then ->
+          container.get "key"
+        .then (value) ->
+          value.should.equal "second"
+        .should.notify callback
+
     describe "#get()", ->
       it "should return promise", ->
         w.isPromise(kantaina().get("key")).should.be.true

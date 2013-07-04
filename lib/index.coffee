@@ -22,6 +22,7 @@ class Container extends events.EventEmitter
     if _.isFunction value
       @dependencies[key] = parseArguments value
       @factories[key] = value
+      delete @values[key]
 
       for dependency in @dependencies[key]
         @graph.add key, dependency
