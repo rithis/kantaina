@@ -74,10 +74,7 @@ class Container extends events.EventEmitter
     deferred.promise
 
   _getMany: (keys) ->
-    promises = keys.map (key) =>
-      @_getOne key
-
-    w.all promises
+    w.map keys, @_getOne.bind @
 
 
 module.exports = ->
