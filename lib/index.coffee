@@ -12,9 +12,7 @@ parseArguments = (f) ->
 
 class Container extends events.EventEmitter
   constructor: ->
-    @factories = {}
-    @values = container: @
-    @graph = new DepGraph
+    @clean()
 
   set: (key, value) ->
     if typeof value is "function"
@@ -64,6 +62,11 @@ class Container extends events.EventEmitter
 
   inject: (factory) ->
     @get(parseArguments factory).spread factory
+
+  clean: ->
+    @graph = new DepGraph
+    @factories = {}
+    @values = container: @
 
 
 module.exports = ->

@@ -157,3 +157,14 @@ describe "kantaina()", ->
         container.inject (a, b) ->
           a + b
         .should.eventually.equal(3).notify callback
+
+    describe "#clean()", ->
+      it "should clean container", ->
+        container = kantaina()
+        container.set "a", 1
+        container.set "b", ->
+        container.values.should.have.property "a"
+        container.factories.should.have.property "b"
+        container.clean()
+        container.values.should.not.have.property "a"
+        container.factories.should.not.have.property "b"
