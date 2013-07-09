@@ -14,13 +14,18 @@ class Container extends events.EventEmitter
   constructor: ->
     @clean()
 
-  set: (key, value) ->
+  set: (key, dependencies, value) ->
+    if value is undefined
+      value = dependencies
+      dependencies = undefined
+
     if typeof value is "function"
       @factories[key] = value
       delete @values[key]
 
       # check cyclic dependency
-      @graph.add key, dependency for dependency in parseArguments value
+      dependencies = parseArguments value unless dependencies
+      @graph.add key, dependency for dependency in dependencies
       @graph.getChain key
 
       # call factory if any listeners registered
@@ -35,8 +40,8 @@ class Container extends events.EventEmitter
   has: (key) ->
     @values.hasOwnProperty(key) or @factories.hasOwnProperty(key)
 
-  unless: (key, value) ->
-    @set key, value unless @has key
+  unless: (key, dependencies, value) ->
+    @set key, dependencies, value unless @has key
     @
 
   get: (keys) ->
@@ -45,7 +50,7 @@ class Container extends events.EventEmitter
         w.resolve @values[key]
 
       else if @factories[key]
-        @values[key] = @inject(@factories[key]).then (value) =>
+        @values[key] = @inject(@graph.map[key], @factories[key]).then (value) =>
           @values[key] = value
           @emit key, value
           value
@@ -60,8 +65,12 @@ class Container extends events.EventEmitter
     else
       getter keys
 
-  inject: (factory) ->
-    @get(parseArguments factory).spread factory
+  inject: (dependencies = [], factory) ->
+    if factory is undefined
+      factory = dependencies
+      dependencies = parseArguments factory
+
+    @get(dependencies).spread factory
 
   clean: ->
     @graph = new DepGraph

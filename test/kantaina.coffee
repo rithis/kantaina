@@ -51,6 +51,14 @@ describe "kantaina()", ->
             "value"
         , 50
 
+      it "should inject specified dependencies", (callback) ->
+        container = kantaina()
+        container.set "a", 6
+        container.set "b", 2
+        container.set "c", ["a", "b"], (b, a) ->
+          b/a
+        container.get("c").should.eventually.equal(3).notify callback
+
     describe "#has()", ->
       it "should check values", ->
         container = kantaina()
@@ -74,6 +82,14 @@ describe "kantaina()", ->
         container.unless "key", "first"
         container.unless "key", "second"
         container.get("key").should.eventually.equal("first").notify callback
+
+      it "should inject specified dependencies", (callback) ->
+        container = kantaina()
+        container.unless "a", 6
+        container.unless "b", 2
+        container.unless "c", ["a", "b"], (b, a) ->
+          b/a
+        container.get("c").should.eventually.equal(3).notify callback
 
     describe "#get()", ->
       it "should return promise", ->
@@ -156,6 +172,14 @@ describe "kantaina()", ->
         container.set "b", 2
         container.inject (a, b) ->
           a + b
+        .should.eventually.equal(3).notify callback
+
+      it "should inject specified dependencies", (callback) ->
+        container = kantaina()
+        container.set "a", 6
+        container.set "b", 2
+        container.inject ["a", "b"], (b, a) ->
+          b/a
         .should.eventually.equal(3).notify callback
 
     describe "#clean()", ->
