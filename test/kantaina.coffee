@@ -59,6 +59,16 @@ describe "kantaina()", ->
           b/a
         container.get("c").should.eventually.equal(3).notify callback
 
+      it "should reset grapth on next define", (callback) ->
+        container = kantaina()
+        container.set "a", 1
+        container.set "b", 2
+        container.set "c", (a) ->
+          a
+        container.set "c", (b) ->
+          b
+        container.get("c").should.eventually.equal(2).notify callback
+
     describe "#has()", ->
       it "should check values", ->
         container = kantaina()

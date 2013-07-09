@@ -22,6 +22,7 @@ class Container extends events.EventEmitter
     if typeof value is "function"
       @factories[key] = value
       delete @values[key]
+      delete @graph.map[key]
 
       # check cyclic dependency
       dependencies = parseArguments value unless dependencies
