@@ -1,13 +1,7 @@
+parseArguments = require "parse-fn-args"
 DepGraph = require "dep-graph"
 events = require "events"
 w = require "when"
-
-
-parseArguments = (f) ->
-  f.toString()
-    .match(/function\s+\w*\s*\((.*?)\)/)[1]
-    .split(/\s*,\s*/)
-    .filter((arg) -> arg.length > 0)
 
 
 class Container extends events.EventEmitter

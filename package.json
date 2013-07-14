@@ -22,6 +22,7 @@
 , "dependencies": {
     "when": "~2.2"
   , "dep-graph": "~1.1"
+  , "parse-fn-args": "~0.0"
   }
 , "devDependencies": {
     "chai": "~1.7"
