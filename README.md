@@ -2,6 +2,8 @@
 
 > Wonderful asynchronous DI container based on promises.
 
+[![Build Status](https://travis-ci.org/rithis/kantaina.png?branch=master)](https://travis-ci.org/rithis/kantaina) [![Dependency Status](https://gemnasium.com/rithis/kantaina.png)](https://gemnasium.com/rithis/kantaina)
+
 ## Usage
 
 ```coffee
