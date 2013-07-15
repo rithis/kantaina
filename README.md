@@ -2,7 +2,10 @@
 
 > Wonderful asynchronous DI container based on promises.
 
-[![Build Status](https://travis-ci.org/rithis/kantaina.png?branch=master)](https://travis-ci.org/rithis/kantaina) [![Dependency Status](https://gemnasium.com/rithis/kantaina.png)](https://gemnasium.com/rithis/kantaina)
+[![Build Status](https://travis-ci.org/rithis/kantaina.png?branch=master)](https://travis-ci.org/rithis/kantaina)
+[![Coverage Status](https://coveralls.io/repos/rithis/kantaina/badge.png?branch=master)](https://coveralls.io/r/rithis/kantaina?branch=master)
+[![Dependency Status](https://gemnasium.com/rithis/kantaina.png)](https://gemnasium.com/rithis/kantaina)
+[![NPM version](https://badge.fury.io/js/kantaina.png)](http://badge.fury.io/js/kantaina)
 
 ## Usage
 
