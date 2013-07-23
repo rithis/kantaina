@@ -192,6 +192,16 @@ describe "kantaina()", ->
           b/a
         .should.eventually.equal(3).notify callback
 
+      it "should inject array of factories", (callback) ->
+        container = kantaina()
+        container.inject([
+          (container) -> container.set "c", (a, b) -> a + b
+          (container) -> container.set "b", 2
+          (container) -> container.set "a", 1
+        ]).then ->
+          container.get "c"
+        .should.eventually.equal(3).notify callback
+
     describe "#clean()", ->
       it "should clean container", ->
         container = kantaina()

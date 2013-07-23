@@ -61,11 +61,18 @@ class Container extends events.EventEmitter
       getter keys
 
   inject: (dependencies = [], factory) ->
+    injector = (factory, dependencies) =>
+      dependencies = parseArguments factory unless dependencies
+      @get(dependencies).spread factory
+
     if factory is undefined
       factory = dependencies
-      dependencies = parseArguments factory
+      dependencies = undefined
 
-    @get(dependencies).spread factory
+    if Array.isArray factory
+      w.map factory, injector
+    else
+      injector factory, dependencies
 
   clean: ->
     @graph = new DepGraph
