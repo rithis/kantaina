@@ -1,4 +1,4 @@
-kantaina = require ".."
+kantaina = require "../lib"
 sinon = require "sinon"
 chai = require "chai"
 w = require "when"
